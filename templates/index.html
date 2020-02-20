@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block webhead %}
+<meta charset="UTF-8">
+<meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% endblock %}
+
+
+
+
+{% block webbody %}
+
+<!-- {% if commend_list %}
+
+<el-carousel :interval="4000" type="card" height="250px" style="margin-bottom: 5px">
+    <el-carousel-item v-for="(wen,index) in commend_list" :key="index">
+        <el-card class="box-card" style="height: 95%; background:url('{% static 'bg/1.jpg' %}')">
+            <div style="padding-top: 40%">
+                {% verbatim %}
+                <a :href = "'/b/details/'+  wen.title ">
+                    <h3 style="text-align: center;color: grey">{{ wen.title }}</h3>
+                </a>
+                {% endverbatim %}
+            </div>
+        </el-card>
+    </el-carousel-item>
+</el-carousel>
+
+{% endif %}
+
+
+{% for blog in blog_list %}
+    <el-card class="box-card">
+      <div class="text item">
+          <a href="{% url "blog:details" blog.title %}" style="font-size: 20px; font-weight: bold;color: #00CC66">{{ blog.title }}</a>
+          <br>
+          {{ blog.summary|safe }}
+      </div>
+        <hr>
+        <span style="font-size: 12px">
+            <i class="el-icon-date"></i> &nbsp; {{ blog.create_at|date:"M d Y" }}
+        </span>
+        <span style="margin-right: 30px"></span>
+        <span style="font-size: 12px">
+            <i class="el-icon-edit"></i> &nbsp; {{ blog.author }}
+        </span>
+        <span style="margin-right: 30px"></span>
+        {% ifnotequal blog.views 0 %}
+        <span style="font-size: 12px">
+            <i class="el-icon-view"></i> &nbsp; {{ blog.views }}
+        </span>
+        {% endifnotequal %}
+        <span style="font-size: 12px; float: right">
+            <a href="{% url "blog:details" blog.title %}" style="color: #CCCCFF">阅读更多>></a>
+        </span>
+    </el-card>
+<br>
+{% endfor %}
+
+{% if cus_list.previous_page_number > 0 %}
+    <a href="?page={{ cus_list.previous_page_number }}">
+        <el-button  round>
+                <span aria-hidden="true"><i class="el-icon-d-arrow-left"></i></span>
+        </el-button>
+    </a>
+{% endif %}
+
+
+{#分页#}
+{% for pg in cus_list.paginator.page_range %}
+
+    {% if cus_list.number == pg %}
+        <a href="?page={{ pg }}"><el-button type="info" round>{{ pg }}</el-button></a>
+    {% elif pg < cus_list.number|add:3 and pg > cus_list.number|add:-3 %}
+        <a href="?page={{ pg }}"><el-button  round>{{ pg }}</el-button></a>
+    {% endif %}
+
+{% endfor %}
+
+
+{% if cus_list.has_next %}
+    <a href="?page={{ cus_list.next_page_number }}">
+        <el-button  round>
+                <span aria-hidden="true"><i class="el-icon-d-arrow-right"></i></span>
+        </el-button>
+    </a>
+{% endif %} -->
+
+<el-row :gutter="20">
+    <el-col :span="8">
+        <div style="margin-bottom: 20px;">
+            <el-row type="flex" justify="center">
+                <!-- <div class="bg-layout"> -->
+                <el-avatar shape="square" :size="150" :src="profilePic" @error="errorHandler">
+                    <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+                </el-avatar>
+                <!-- </div> -->
+            </el-row>
+            <el-row align="bottom" type="flex" justify="center">
+                <!-- <div class="bg-layout"> -->
+                <h1>{{name}}</h1>
+                <!-- </div> -->
+            </el-row>
+        </div>
+    </el-col>
+    <el-col :span="16">
+        <div style="margin-bottom: 20px;">
+            <h2>Location: {{location}}</h2>
+            <h2>Type: {{workType}}</h2>
+            <h2>Position: {{position}}</h2>
+            <!-- <el-row style="margin-top: 15px;"> -->
+            <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
+            <i class="fas fa-envelope-square fa-2x" style="margin-right: 10px;"></i>
+            <i class="fab fa-stack-overflow fa-2x" style="margin-right: 10px;"></i>
+            <i class="fab fa-github-square fa-2x" style="margin-right: 10px;"></i>
+            <!-- </el-row> -->
+        </div>
+    </el-col>
+</el-row>
+<el-row :gutter="20">
+    <div style="margin-bottom: 20px;" class="bg-layout" @change="handleChange">
+        <el-radio-group v-model="radio" >
+            <el-radio-button value="My Application" >My Application</el-radio-button>
+            <el-radio-button value="Edit Profile"> Edit Profile</el-radio-button>
+        </el-radio-group>
+    </div>
+</el-row>
+<el-row :gutter="20">
+    <el-col>
+        <div>
+            <el-tabs tab-position="left">
+                <el-tab-pane label="Working experience">
+                    <el-row :gutter="20">
+                        <el-col :span="2" offset="1">
+                            <h3>Industry:</h3>
+                        </el-col>
+                        <el-col :span="20" align="left" offset="1">
+                            <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false"
+                                @close="handleClose(tag)">{{tag}}</el-tag>
+                            <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput"
+                                size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+                            </el-input>
+                            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row style="margin-top: 10px">
+                        <el-col span="6" :offset="3">
+                            <el-row style="margin-top: 10px">
+                                <el-card class="box-card">
+                                    <div slot="header" class="clearfix">
+                                        <span style="font-size: 18px;">Full stack engineer @ xx Company</span>
+                                        <h5 class="field">FINTECH</h5>
+                                        <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+                                    </div>
+                                    <div v-for="o in detail" :key="o" class="text item">{{ o }}</div>
+                                </el-card>
+                            </el-row>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="Skill / Project">
+                    <el-row :gutter="20">
+                        <el-col :span="2" offset="1">
+                            <h3>Skill:</h3>
+                        </el-col>
+                        <el-col :span="20" align="left">
+                            <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false"
+                                @close="handleClose(tag)">{{tag}}</el-tag>
+                            <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput"
+                                size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+                            </el-input>
+                            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row style="margin-top: 10px">
+                        <el-col span="6" :offset="3">
+                            <el-row style="margin-top: 10px">
+                                <el-card class="box-card">
+                                    <div slot="header" class="clearfix">
+                                        <span style="font-size: 18px;">Pinball web version</span>
+                                        <h5 class="field">GAME</h5>
+                                        <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+                                    </div>
+                                    <div v-for="o in projectDetail" :key="o" class="text item">{{ o }}</div>
+                                </el-card>
+                            </el-row>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="others">OTHERS</el-tab-pane>
+            </el-tabs>
+        </div>
+    </el-col>
+</el-row>
+
+
+
+{% endblock %}
+
+
+{% block js %}
+<!-- commend_list: {{ commend_list|safe }}, -->
+<!-- name: {{name|safe}}, -->
+
+{% endblock %}
+
+
+<style>
+
+</style>

@@ -1,0 +1,23 @@
+<el-header>
+  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <el-menu-item index="6"><a href="{% url 'getHomePage' %}">Home</a></el-menu-item>
+    <el-menu-item index="7">Why Eniac</el-menu-item>
+    <el-menu-item index="8">How Eniac works</el-menu-item>
+    <el-menu-item index="9">FAQ</el-menu-item>
+    {#              <el-menu-item index="8"><a href="https://gist.github.com/ngauerh">Gist</a></el-menu-item>#}
+    <el-menu-item index="10" style="float: right;">Login</el-menu-item>
+    <el-menu-item index="11" style="float: right;">
+      <a href="{% url 'getUserInfo' %}">
+      <div class="demo-type">
+        <el-avatar :size="35" src="">
+          <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+        </el-avatar>
+      </div>
+    </a>
+    </el-menu-item>
+    {#              <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>#}
+  </el-menu>
+  <div class="line"></div>
+
+  <br><br>
+</el-header>

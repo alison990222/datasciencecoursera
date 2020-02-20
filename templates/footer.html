@@ -1,0 +1,33 @@
+{% load static from staticfiles %}
+<br>
+<hr>
+<br>
+<el-row :gutter="20">
+    <el-col :span="8">
+        <div class="footer"> Copyright © 2020 Eniac</div>
+    </el-col>
+    <el-col :span="8">
+        <div class="footer">Contact</div>
+        <div class="footer">Teams</div>
+    </el-col>
+    <el-col :span="8">
+        <div class="footer">Terms of Service</div>
+        <div class="footer">Privacy Policy</div>
+        <div class="footer">FAQ</div>
+    </el-col>
+</el-row>
+<!-- <div style="text-align: center">
+    Copyright © 2020 Eniac   -->
+<!-- </div>{{ info.title }}. -->
+</div>
+<br>
+<br>
+
+<style>
+    .footer {
+        /* in footer.html*/
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+</style>

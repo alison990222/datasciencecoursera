@@ -1,0 +1,117 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" integrity="sha384-v8BU367qNbs/aIZIxuivaU55N5GPF89WBerHoGA4QTcbUjYiLQtKdrfXnqAcXyTv" crossorigin="anonymous">
+
+
+  {% block webhead %}
+
+  {% endblock %}
+</head>
+<style>
+  a {
+    text-decoration: none;
+  }
+
+  a:link {
+    color: #000000;
+    text-decoration: none;
+  }
+
+  a:visited {
+    color: #000000;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #999999;
+    text-decoration: none;
+  }
+  .bg-layout {
+      background: #d3dce6;
+      border-radius: 4px;
+      min-height: 36px;
+      margin-bottom: 20px;
+    }
+</style>
+
+<body>
+  <div id="app">
+
+    <el-row>
+      <el-col > <!-- :span="22" :offset="1" -->
+        <el-container>
+
+          {% include 'navbar.html' %}
+
+
+          <el-main>
+            <el-row>
+              <!-- {#  主体#} -->
+              <el-col :span="15" :offset="5">
+                {% block webbody %}
+
+                {% endblock %}
+              </el-col>
+              <!-- {#  侧边栏#}
+              <el-col :span="7" :push="2">
+                {% block rightbody %}
+                {% endblock %}
+              </el-col> -->
+            </el-row>
+          </el-main>
+
+          <el-footer>
+            {% include 'footer.html' %}
+          </el-footer>
+
+
+        </el-container>
+      </el-col>
+    </el-row>
+
+
+  </div>
+
+
+
+
+</body>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        activeIndex: '1',
+        activeIndex2: '1',
+        input_name: '',
+        input_email: '',
+        textarea_m: '',
+        form: {
+          name: '',
+
+        },
+        // {% block js %} {% endblock %}
+      };
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      
+    }
+  })
+</script>
+
+</html>
