@@ -5,4 +5,5 @@ from .views import *
 urlpatterns = [
     # path('', views.index, name='index'),
     url(r'^$', getUserInfo, name="getUserInfo"),
+    url(r'^editProfile$', editProfile, name="editProfile"),
 ]
