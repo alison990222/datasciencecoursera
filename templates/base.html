@@ -11,7 +11,8 @@
   <!-- 引入组件库 -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" integrity="sha384-v8BU367qNbs/aIZIxuivaU55N5GPF89WBerHoGA4QTcbUjYiLQtKdrfXnqAcXyTv" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css"
+    integrity="sha384-v8BU367qNbs/aIZIxuivaU55N5GPF89WBerHoGA4QTcbUjYiLQtKdrfXnqAcXyTv" crossorigin="anonymous">
 
 
   {% block webhead %}
@@ -37,19 +38,21 @@
     color: #999999;
     text-decoration: none;
   }
+
   .bg-layout {
-      background: #d3dce6;
-      border-radius: 4px;
-      min-height: 36px;
-      margin-bottom: 20px;
-    }
+    background: #d3dce6;
+    border-radius: 4px;
+    min-height: 36px;
+    margin-bottom: 20px;
+  }
 </style>
 
 <body>
   <div id="app">
 
     <el-row>
-      <el-col > <!-- :span="22" :offset="1" -->
+      <el-col>
+        <!-- :span="22" :offset="1" -->
         <el-container>
 
           {% include 'navbar.html' %}
@@ -59,6 +62,8 @@
             <el-row>
               <!-- {#  主体#} -->
               <el-col :span="15" :offset="5">
+                
+        
                 {% block webbody %}
 
                 {% endblock %}
@@ -98,10 +103,43 @@
         input_name: '',
         input_email: '',
         textarea_m: '',
-        form: {
-          name: '',
-
+        editform:{
+          name: "",
+          location: "",
+          workType: [],
+          position: "",
         },
+        editExperience:{
+          name: "",
+          detail: "",
+          field: "",
+          time: "",
+        },
+      
+
+
+        gridData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }],
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+        experienceVisible: false,
+        /*index.html*/
+        
         // {% block js %} {% endblock %}
       };
     },
@@ -109,7 +147,7 @@
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
-      
+
     }
   })
 </script>
