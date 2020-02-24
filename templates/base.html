@@ -108,6 +108,10 @@
           location: "",
           workType: [],
           position: "",
+          linkedin: "",
+          stack: "",
+          email: "",
+          github: "",
         },
         editExperience:{
           name: "",
@@ -138,8 +142,9 @@
         dialogTableVisible: false,
         dialogFormVisible: false,
         experienceVisible: false,
+        formLabelWidth: '120px',
         /*index.html*/
-        
+        // experience: {{experience|safe}},
         // {% block js %} {% endblock %}
       };
     },
@@ -147,6 +152,11 @@
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
+      expFunc:function(e){
+        console.log(e);
+        
+        this.experienceVisible = true;
+      }
 
     }
   })

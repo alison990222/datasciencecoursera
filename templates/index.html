@@ -111,10 +111,14 @@
             <h2>Location: {{location}}</h2>
             <h2>Type: {{workType}}</h2>
             <h2>Position: {{position}}</h2>
-            <a href="{{ github }}" target="_blank"><i class="fab fa-linkedin fa-2x" style="margin-right: 10px;" ></i></a>
-            <i class="fas fa-envelope-square fa-2x" style="margin-right: 10px;"></i>
-            <i class="fab fa-stack-overflow fa-2x" style="margin-right: 10px;"></i>
-            <i class="fab fa-github-square fa-2x" style="margin-right: 10px;"></i>
+            <a href="{{ linkedin }}" target="_blank"><i class="fab fa-linkedin fa-2x"
+                    style="margin-right: 10px;"></i></a>
+            <a href="{{ email }}" target="_blank"><i class="fas fa-envelope-square fa-2x"
+                    style="margin-right: 10px;"></i></a>
+            <a href="{{ stackoverflow }}" target="_blank"><i class="fab fa-stack-overflow fa-2x"
+                    style="margin-right: 10px;"></i></a>
+            <a href="{{ github }}" target="_blank"><i class="fab fa-github-square fa-2x"
+                    style="margin-right: 10px;"></i></a>
         </div>
     </el-col>
 </el-row>
@@ -123,28 +127,31 @@
         <el-button-group style="width: 100%;">
             <el-button plain style="width: 49%" type="text" @click="dialogTableVisible = true">My Application
             </el-button>
-            <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+            <el-dialog title="My Application" :visible.sync="dialogTableVisible" :close-on-click-modal="false">
                 <el-table :data="gridData">
-                    <el-table-column property="date" label="日期" width="150"></el-table-column>
-                    <el-table-column property="name" label="姓名" width="200"></el-table-column>
-                    <el-table-column property="address" label="地址"></el-table-column>
+                    <el-table-column property="date" label="Time" width="150"></el-table-column>
+                    <el-table-column property="name" label="Company" width="200"></el-table-column>
+                    <el-table-column property="address" label="Status"></el-table-column>
                 </el-table>
             </el-dialog>
 
             <el-button plain style="width: 49%;" type="text" @click="dialogFormVisible = true">Edit Profile</el-button>
-            <el-dialog  title="Edit Profile" :visible.sync="dialogFormVisible">
+            <el-dialog title="Edit Profile" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
                 <H1>Personal Info</H1>
                 <el-form :model="editform" method="post" action="{% url 'editProfile' %}">
                     <!-- action="editProfile"> -->
                     {% csrf_token %}
                     <el-form-item label="Name" :label-width="formLabelWidth">
-                        <el-input v-model="editform.name" name="username" autocomplete="off"></el-input>
+                        <el-input placeholder={{name}} v-model="editform.name" name="username" autocomplete="off">
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="Location" :label-width="formLabelWidth">
-                        <el-input v-model="editform.location" name="location" autocomplete="off"></el-input>
+                        <el-input placeholder={{location}} v-model="editform.location" name="location"
+                            autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Position" :label-width="formLabelWidth">
-                        <el-input v-model="editform.position" name="position" autocomplete="off"></el-input>
+                        <el-input placeholder={{position}} v-model="editform.position" name="position"
+                            autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Job Type" :label-width="formLabelWidth">
                         <el-checkbox-group v-model="editform.workType" name="workType">
@@ -156,26 +163,27 @@
                     </el-form-item>
                     <h1>Contact</h1>
                     <el-form-item label="Linkedin Link" :label-width="formLabelWidth">
-                        <el-input v-model="editform.linkedin" name="linkedin" autocomplete="off"></el-input>
+                        <el-input placeholder={{linkedin}} v-model="editform.linkedin" name="linkedin"
+                            autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Github Link" :label-width="formLabelWidth">
-                        <el-input v-model="editform.github" name="github" autocomplete="off"></el-input>
+                        <el-input placeholder={{github}} v-model="editform.github" name="github" autocomplete="off">
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="Stack Overflow" :label-width="formLabelWidth">
-                        <el-input v-model="editform.stack" name="stack" autocomplete="off"></el-input>
+                        <el-input placeholder={{stackoverflow}} v-model="editform.stack" name="stack"
+                            autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="email" :label-width="formLabelWidth">
-                        <el-input v-model="editform.email" name="email" autocomplete="off"></el-input>
+                        <el-input placeholder={{email}} v-model="editform.email" name="email" autocomplete="off">
+                        </el-input>
                     </el-form-item>
                     <input type="hidden" name="id" value="{{ userID }}">
-                    <el-button native-type="submit"style="margin-left: 88%;">save</el-button>
+                    <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
                     <!-- <button type="submit">save</button> -->
                 </el-form>
             </el-dialog>
         </el-button-group>
-
-        <!-- <el-radio v-model="radio1" label="1">备选项</el-radio> -->
-        <!-- <el-radio v-model="radio" label="2">备选项</el-radio> -->
     </div>
 </el-row>
 <el-row :gutter="20">
@@ -192,6 +200,34 @@
                                     {{i|safe}}
                                 </el-tag>
                                 {% endfor%}
+                                <el-button type="text" icon="el-icon-edit" style="margin-left: 40%; font-size: 1.3rem;"></el-button>
+                                <el-dialog title="Edit Experience" :visible.sync="experienceVisible"
+                                    :close-on-click-modal="false">
+                                    <H1>name</H1>
+                                    <el-form :model="editExperience" method="post" action="{% url 'editProfile' %}">
+                                        {% csrf_token %}
+                                        <el-form-item label="name" :label-width="formLabelWidth">
+                                            <el-input v-model="editExperience.name" name="username" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <input type="hidden" name="id" value="{{ userID }}">
+                                        <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
+                                    </el-form>
+                                </el-dialog>
+                                <el-button type="text" icon="el-icon-plus" style="font-size: 1.3rem; margin-left: 5px;"></el-button>
+                                <el-dialog title="Edit Experience" :visible.sync="experienceVisible"
+                                    :close-on-click-modal="false">
+                                    <H1>name</H1>
+                                    <el-form :model="editExperience" method="post" action="{% url 'editProfile' %}">
+                                        {% csrf_token %}
+                                        <el-form-item label="name" :label-width="formLabelWidth">
+                                            <el-input v-model="editExperience.name" name="username" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <input type="hidden" name="id" value="{{ userID }}">
+                                        <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
+                                    </el-form>
+                                </el-dialog>
                             </div>
                         </el-col>
                     </el-row>
@@ -202,26 +238,35 @@
                                 <el-card class="box-card">
                                     <div slot="header" class="clearfix">
                                         <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                        <el-button type="text" @click="experienceVisible = true" icon="el-icon-edit" style="float: right;"></el-button>
-                                        <el-dialog  title="Edit Experience" :visible.sync="experienceVisible">
+                                        <el-button id="{{i.id}}" value="hellollo" type="text" @click="expFunc($event)"
+                                            icon="el-icon-edit" style="float: right; font-size: 1.3rem;"></el-button>
+                                        <el-dialog title="Edit Experience" :visible.sync="experienceVisible"
+                                            :close-on-click-modal="false">
                                             <H1>name</H1>
-                                            <el-form :model="editExperience" method="post" action="{% url 'editProfile' %}">
+                                            <el-form :model="editExperience" method="post"
+                                                action="{% url 'editProfile' %}">
                                                 {% csrf_token %}
                                                 <el-form-item label="name" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.name" name="username" autocomplete="off"></el-input>
+                                                    <el-input v-model="editExperience.name" name="username"
+                                                        autocomplete="off"></el-input>
                                                 </el-form-item>
                                                 <el-form-item label="time" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.time" name="time" autocomplete="off"></el-input>
+                                                    <el-input v-model="editExperience.time" name="time"
+                                                        autocomplete="off"></el-input>
                                                 </el-form-item>
                                                 <el-form-item label="field" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.field" name="field" autocomplete="off"></el-input>
+                                                    <el-input v-model="editExperience.field" name="field"
+                                                        autocomplete="off"></el-input>
                                                 </el-form-item>
                                                 <el-form-item label="detail" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.detail" name="detail" autocomplete="off"></el-input>
+                                                    <el-input v-model="editExperience.detail" name="detail"
+                                                        autocomplete="off"></el-input>
                                                 </el-form-item>
+                                                <span style="font-size: 18px;">{{i.name|safe}}</span>
                                                 <!-- <input type="hidden" name="expID" value="{{ i.name|safe }}"> -->
                                                 <input type="hidden" name="id" value="{{ userID }}">
-                                                <el-button native-type="submit"style="margin-left: 88%;">save</el-button>
+                                                <el-button native-type="submit" style="margin-left: 88%;">save
+                                                </el-button>
                                             </el-form>
                                         </el-dialog>
                                         <!-- <h5 class="field">FINTECH</h5> -->
