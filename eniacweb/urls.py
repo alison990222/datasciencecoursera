@@ -19,7 +19,6 @@ from user import views
 
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url(r'^company/', include('company.urls')),
     url(r'^user/', include('user.urls')),
     url(r'^', views.getHomePage, name="getHomePage")
 ]

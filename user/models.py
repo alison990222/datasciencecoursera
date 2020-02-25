@@ -18,17 +18,6 @@ class coders(models.Model):
     intro = models.CharField(max_length=1000, null=True, default=None)
     # location and timezone will be left null so far
 
-class application(models.Model):
-    time = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=50, null=True, default=None)
-    coder = models.ForeignKey(to=coders, related_name="coder", null=True, blank=True, default=None,
-                                 on_delete=models.CASCADE)
-    company = models.ForeignKey(to=company, related_name="company", null=True, blank=True, default=None,
-                                 on_delete=models.CASCADE)
-    feedback = models.CharField(max_length=1000, null=True, default=None)
- 
-
-
 class company(models.Model):
     name = models.CharField(max_length=50, null=True, default=None)
     industry = models.CharField(max_length=50, null=True, default=None)
@@ -52,9 +41,30 @@ class company(models.Model):
     ins = models.URLField(max_length=250, null=True, default=None)
 
 
-class Job(models.Model):
+class job(models.Model):
     name = models.CharField(max_length=50, null=True, default=None)
-    
+    teamMission = models.CharField(max_length=1000, null=True, default=None)
+    teamSize = models.CharField(max_length=100, null=True, default=None)
+    currentStage = models.CharField(max_length=1000, null=True, default=None)
+    qualification = models.CharField(max_length=1000, null=True, default=None)
+    work = models.CharField(max_length=1000, null=True, default=None)
+    teamCulture = models.CharField(max_length=1000, null=True, default=None)
+    contact = models.CharField(max_length=1000, null=True, default=None)
+    company = models.ForeignKey(to=company, related_name="job", null=True, blank=True, default=None,
+                                 on_delete=models.CASCADE)
+
+class application(models.Model):
+    time = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=50, null=True, default=None)
+    coder = models.ForeignKey(to=coders, related_name="coder_appli", null=True, blank=True, default=None,
+                                 on_delete=models.CASCADE)
+    company = models.ForeignKey(to=company, related_name="company_appli", null=True, blank=True, default=None,
+                                 on_delete=models.CASCADE)
+    job = models.ForeignKey(to=job, related_name="job_appli", null=True, blank=True, default=None,
+                                 on_delete=models.CASCADE)
+    feedback = models.CharField(max_length=1000, null=True, default=None)
+ 
+
 
 
 class experienceInfo(models.Model):
