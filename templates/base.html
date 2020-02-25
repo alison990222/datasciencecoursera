@@ -119,30 +119,17 @@
           field: "",
           time: "",
         },
-      
-
-
-        gridData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
         dialogTableVisible: false,
         dialogFormVisible: false,
         experienceVisible: false,
         formLabelWidth: '120px',
+        dialog: {
+          one: false,
+          two: false,
+          three: false,
+          four: false,
+          five: false,
+        }
         /*index.html*/
         // experience: {{experience|safe}},
         // {% block js %} {% endblock %}
@@ -154,8 +141,18 @@
       },
       expFunc:function(e){
         console.log(e);
+        console.log(e.path[1].id);
+        if(e.path[1].id == "1"){
+          this.dialog.one = true;
+          console.log("1true");
+        }
+        else if(e.path[1].id == "2"){
+          this.dialog.two = true;
+          console.log("2true");
+        }
+
         
-        this.experienceVisible = true;
+        // this.experienceVisible = true;
       }
 
     }
