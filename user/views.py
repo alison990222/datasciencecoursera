@@ -21,12 +21,21 @@ def getUserInfo(request):
             project = user.project.all()
             context['userID'] = userID
             context['name'] = user.username
+            context['location'] = user.location
+            context['workType'] = user.workType
+            context['position'] = user.position
+
             context['industryType'] = industryType
             context['skillType'] = skillType
-            context['location'] = user.location
+
             context['experience'] = experience
             context['project'] = project
+
             context['github'] = user.github
+            context['linkedin'] = user.linkedin
+            context['stackoverflow'] = user.stackoverflow
+            context['email'] = user.email
+
             context['msg'] = "success"
             context['errorNum'] = 0
 
@@ -43,7 +52,7 @@ def getUserInfo(request):
     #         userID = request.POST["id"] # ["username"]
     #         user = coders.objects.get(id=userID)
     #         print(request.POST)
-    #         #user.username = request.POST["username"] 
+    #         #user.username = request.POST["username"]
     #         user.save()
     #         industryType = user.industryType.split(',')
     #         skillType = user.skillType.split(',')
@@ -76,12 +85,37 @@ def editProfile(request):
     context = {}
     try:
         # data = request.POST -> this line gets all the data
-        userID = request.POST["id"] # ["username"]
+        userID = request.POST["id"]  # ["username"]
         user = coders.objects.get(id=userID)
         print(request.POST)
-        user.username = request.POST["username"] 
-        user.workType = request.POST.getlist("workType")
-        #TODO: format of worktype 
+        username = request.POST["username"]
+        location = request.POST["location"]
+        position = request.POST["position"]
+        workType = request.POST.getlist("workType")
+
+        linkedin = request.POST["linkedin"]
+        github = request.POST["github"]
+        stack = request.POST["stack"]
+        email = request.POST["email"]
+
+        if username:
+            user.username = username
+        if location:
+            user.location = location
+        if position:
+            user.position = position
+        if workType:
+            user.workType = workType
+        if linkedin:
+            user.linkedin = linkedin
+        if github:
+            user.github = github
+        if stack:
+            user.stackoverflow = stack
+        if email:
+            user.email = email
+
+        # TODO: format of worktype
         user.save()
         industryType = user.industryType.split(',')
         skillType = user.skillType.split(',')
@@ -89,12 +123,21 @@ def editProfile(request):
         project = user.project.all()
         context['userID'] = userID
         context['name'] = user.username
-        context['industryType'] = industryType
-        context['workType'] = user.workType
-        context['skillType'] = skillType
         context['location'] = user.location
+        context['workType'] = user.workType
+        context['position'] = user.position
+
+        context['industryType'] = industryType
+        context['skillType'] = skillType
+
         context['experience'] = experience
         context['project'] = project
+
+        context['github'] = user.github
+        context['linkedin'] = user.linkedin
+        context['stackoverflow'] = user.stackoverflow
+        context['email'] = user.email
+
         context['msg'] = "success"
         context['errorNum'] = 0
     except Exception as e:
