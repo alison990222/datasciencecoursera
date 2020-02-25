@@ -11,25 +11,41 @@ from django.views.decorators.http import require_http_methods
 def getUserInfo(request):
     context = {}
     if request.method == 'GET':
-        print("get")
         try:
+            print("get")
             userID = request.GET.get('id')
             user = coders.objects.get(id=userID)
-            industryType = user.industryType.split(',')
-            skillType = user.skillType.split(',')
+            industryType = user.industryType
+            if industryType:
+                user.industryType = industryType.split(',')
+            skillType = user.skillType
+            if skillType:
+                skillType = user.industryType.split(',')
             experience = user.experience.all()
             project = user.project.all()
+            applicationObj = user.coder_appli.all()
+
+            appliList = []
+            for appli in applicationObj:
+                appliList.append({
+                    'company': appli.company.name,
+                    'job': appli.job.name,
+                    'time': appli.time.strftime("%Y-%m-%d %H:%M:%S"),
+                    'status': appli.status,
+                })
+            print(appliList)
             context['userID'] = userID
             context['name'] = user.username
             context['location'] = user.location
             context['workType'] = user.workType
             context['position'] = user.position
 
-            context['industryType'] = industryType
-            context['skillType'] = skillType
+            context['industryType'] = user.industryType
+            context['skillType'] = user.skillType
 
             context['experience'] = experience
             context['project'] = project
+            context['appli'] = appliList
 
             context['github'] = user.github
             context['linkedin'] = user.linkedin
@@ -117,21 +133,37 @@ def editProfile(request):
 
         # TODO: format of worktype
         user.save()
-        industryType = user.industryType.split(',')
-        skillType = user.skillType.split(',')
+        industryType = user.industryType
+        if industryType:
+            user.industryType = industryType.split(',')
+        skillType = user.skillType
+        if skillType:
+            skillType = user.industryType.split(',')
         experience = user.experience.all()
         project = user.project.all()
+        applicationObj = user.coder_appli.all()
+
+        appliList = []
+        for appli in applicationObj:
+            appliList.append({
+                'company': appli.company.name,
+                'job': appli.job.name,
+                'time': appli.time.strftime("%Y-%m-%d %H:%M:%S"),
+                'status': appli.status,
+            })
+        print(appliList)
         context['userID'] = userID
         context['name'] = user.username
         context['location'] = user.location
         context['workType'] = user.workType
         context['position'] = user.position
 
-        context['industryType'] = industryType
-        context['skillType'] = skillType
+        context['industryType'] = user.industryType
+        context['skillType'] = user.skillType
 
         context['experience'] = experience
         context['project'] = project
+        context['appli'] = appliList
 
         context['github'] = user.github
         context['linkedin'] = user.linkedin

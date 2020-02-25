@@ -49,10 +49,11 @@
             <el-button plain style="width: 49%" type="text" @click="dialogTableVisible = true">My Application
             </el-button>
             <el-dialog title="My Application" :visible.sync="dialogTableVisible" :close-on-click-modal="false">
-                <el-table :data="gridData">
-                    <el-table-column property="date" label="Time" width="150"></el-table-column>
-                    <el-table-column property="name" label="Company" width="200"></el-table-column>
-                    <el-table-column property="address" label="Status"></el-table-column>
+                <el-table :data="{{appli|safe}}">
+                    <el-table-column property="company" label="Company" width="150"></el-table-column>
+                    <el-table-column property="job" label="Job" width="200"></el-table-column>
+                    <el-table-column property="time" label="Date"></el-table-column>
+                    <el-table-column property="status" label="Status"></el-table-column>
                 </el-table>
             </el-dialog>
 
@@ -60,7 +61,6 @@
             <el-dialog title="Edit Profile" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
                 <H1>Personal Info</H1>
                 <el-form :model="editform" method="post" action="{% url 'editProfile' %}">
-                    <!-- action="editProfile"> -->
                     {% csrf_token %}
                     <el-form-item label="Name" :label-width="formLabelWidth">
                         <el-input placeholder={{name}} v-model="editform.name" name="username" autocomplete="off">
@@ -101,7 +101,6 @@
                     </el-form-item>
                     <input type="hidden" name="id" value="{{ userID }}">
                     <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
-                    <!-- <button type="submit">save</button> -->
                 </el-form>
             </el-dialog>
         </el-button-group>
@@ -161,7 +160,7 @@
                                         <span style="font-size: 18px;">{{i.name|safe}}</span>
                                         <el-button id="{{i.id}}" value="hellollo" type="text" @click="expFunc($event)"
                                             icon="el-icon-edit" style="float: right; font-size: 1.3rem;"></el-button>
-                                        <el-dialog title="Edit Experience" :visible.sync="experienceVisible"
+                                        <el-dialog title="Edit Experience" :visible.sync="this.dialog.two"
                                             :close-on-click-modal="false">
                                             <H1>name</H1>
                                             <el-form :model="editExperience" method="post"
@@ -184,14 +183,11 @@
                                                         autocomplete="off"></el-input>
                                                 </el-form-item>
                                                 <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                                <!-- <input type="hidden" name="expID" value="{{ i.name|safe }}"> -->
                                                 <input type="hidden" name="id" value="{{ userID }}">
                                                 <el-button native-type="submit" style="margin-left: 88%;">save
                                                 </el-button>
                                             </el-form>
                                         </el-dialog>
-                                        <!-- <h5 class="field">FINTECH</h5> -->
-                                        <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
                                     </div>
                                     <div>{{ i.detail|safe }}</div>
                                 </el-card>
@@ -220,8 +216,6 @@
                                 <el-card class="box-card">
                                     <div slot="header" class="clearfix">
                                         <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                        <!-- <h5 class="field">FINTECH</h5> -->
-                                        <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
                                     </div>
                                     <div>{{ i.detail|safe }}</div>
                                 </el-card>
@@ -235,4 +229,8 @@
         </div>
     </el-col>
 </el-row>
+{% endblock %}
+
+{% block js %}
+
 {% endblock %}
