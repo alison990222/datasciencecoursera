@@ -177,3 +177,8 @@ def editProfile(request):
         context['msg'] = str(e)
         context['errorNum'] = 1
     return render(request, 'index.html', context)
+
+
+def getCompanyInfo(request):
+    context = {}
+    return render(request, 'company.html', context)
