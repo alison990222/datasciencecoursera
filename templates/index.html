@@ -120,29 +120,74 @@
                                     {{i|safe}}
                                 </el-tag>
                                 {% endfor%}
-                                <el-button type="text" icon="el-icon-edit" style="margin-left: 40%; font-size: 1.3rem;"></el-button>
+                                <el-button type="text" @click="experienceVisible = true" icon="el-icon-edit"
+                                    style="font-size: 1.3rem; float: right;"></el-button>
                                 <el-dialog title="Edit Experience" :visible.sync="experienceVisible"
                                     :close-on-click-modal="false">
-                                    <H1>name</H1>
+                                    <!-- <H1>name</H1> -->
                                     <el-form :model="editExperience" method="post" action="{% url 'editProfile' %}">
                                         {% csrf_token %}
-                                        <el-form-item label="name" :label-width="formLabelWidth">
-                                            <el-input v-model="editExperience.name" name="username" autocomplete="off">
+                                        {% for i in experience %}
+                                        <H1>{{i.name}}</H1>
+                                        <el-form-item label="company" :label-width="formLabelWidth">
+                                            <el-input placeholder="{{i.name}}" type="text"
+                                                v-model="editExperience.company" name="company" autocomplete="off">
                                             </el-input>
                                         </el-form-item>
+                                        <el-form-item label="position" :label-width="formLabelWidth">
+                                            <el-input v-model="editExperience.position" name="position"
+                                                autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="detail" :label-width="formLabelWidth">
+                                            <el-input placeholder="{{i.detail}}" type="textarea" autosize
+                                                v-model="editExperience.detail"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="field" :label-width="formLabelWidth">
+                                            <el-input v-model="editExperience.field" name="field" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="time" :label-width="formLabelWidth">
+                                            <el-input v-model="editExperience.time" name="time" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        {% endfor%}
                                         <input type="hidden" name="id" value="{{ userID }}">
                                         <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
                                     </el-form>
                                 </el-dialog>
-                                <el-button type="text" icon="el-icon-plus" style="font-size: 1.3rem; margin-left: 5px;"></el-button>
-                                <el-dialog title="Edit Experience" :visible.sync="experienceVisible"
+                                <el-button type="text" @click="editSkillExp = true" icon="el-icon-plus"
+                                    style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
+                                <el-dialog title="Add Experience and Skill" :visible.sync="editSkillExp"
                                     :close-on-click-modal="false">
                                     <H1>name</H1>
-                                    <el-form :model="editExperience" method="post" action="{% url 'editProfile' %}">
+                                    <el-form :model="addSkill" method="post" action="{% url 'editProfile' %}">
                                         {% csrf_token %}
-                                        <el-form-item label="name" :label-width="formLabelWidth">
-                                            <el-input v-model="editExperience.name" name="username" autocomplete="off">
+                                        <el-form-item label="company" :label-width="formLabelWidth">
+                                            <el-input v-model="addSkill.company" name="company" autocomplete="off">
                                             </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="position" :label-width="formLabelWidth">
+                                            <el-input v-model="addSkill.position" name="position" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="detail" :label-width="formLabelWidth">
+                                            <el-input type="textarea" v-model="addSkill.detail" name="detail" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="industry" :label-width="formLabelWidth">
+                                            {% for i in industryType %}
+                                            <el-tag effect="plain" style="margin-left: 5px;" closable @close="handleClose(tag)">
+                                                {{i|safe}}
+                                            </el-tag>
+                                            {% endfor%}
+
+                                            <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue"
+                                                ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm"
+                                                @blur="handleInputConfirm">
+                                            </el-input>
+                                            <el-button v-else class="button-new-tag" size="small" @click="showInput">+
+                                                New Tag</el-button>
                                         </el-form-item>
                                         <input type="hidden" name="id" value="{{ userID }}">
                                         <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
@@ -158,36 +203,37 @@
                                 <el-card class="box-card">
                                     <div slot="header" class="clearfix">
                                         <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                        <el-button id="{{i.id}}" value="hellollo" type="text" @click="expFunc($event)"
+                                        <!-- <el-button id="tf[{{i.id}}]" value="hellollo" type="text" @click="expFunc($event)"
                                             icon="el-icon-edit" style="float: right; font-size: 1.3rem;"></el-button>
-                                        <el-dialog title="Edit Experience" :visible.sync="this.dialog.two"
-                                            :close-on-click-modal="false">
-                                            <H1>name</H1>
-                                            <el-form :model="editExperience" method="post"
-                                                action="{% url 'editProfile' %}">
-                                                {% csrf_token %}
-                                                <el-form-item label="name" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.name" name="username"
-                                                        autocomplete="off"></el-input>
-                                                </el-form-item>
-                                                <el-form-item label="time" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.time" name="time"
-                                                        autocomplete="off"></el-input>
-                                                </el-form-item>
-                                                <el-form-item label="field" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.field" name="field"
-                                                        autocomplete="off"></el-input>
-                                                </el-form-item>
-                                                <el-form-item label="detail" :label-width="formLabelWidth">
-                                                    <el-input v-model="editExperience.detail" name="detail"
-                                                        autocomplete="off"></el-input>
-                                                </el-form-item>
-                                                <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                                <input type="hidden" name="id" value="{{ userID }}">
-                                                <el-button native-type="submit" style="margin-left: 88%;">save
-                                                </el-button>
-                                            </el-form>
-                                        </el-dialog>
+                                            <el-dialog title="Edit Experience" :visible.sync="tf[{{i.id}}]"
+                                                :close-on-click-modal="false" v-slot="scope">
+                                                <H1>name</H1>
+                                                <el-form :model="editExperience" method="post"
+                                                    action="{% url 'editProfile' %}">
+                                                    {% csrf_token %}
+                                                    <el-form-item  label="name"
+                                                        :label-width="formLabelWidth">
+                                                        <el-input placeholder={{i.name}} v-model="editExperience.name" name="username"
+                                                            autocomplete="off"></el-input>
+                                                    </el-form-item>
+                                                    <el-form-item label="time" :label-width="formLabelWidth">
+                                                        <el-input v-model="editExperience.time" name="time"
+                                                            autocomplete="off"></el-input>
+                                                    </el-form-item>
+                                                    <el-form-item label="field" :label-width="formLabelWidth">
+                                                        <el-input v-model="editExperience.field" name="field"
+                                                            autocomplete="off"></el-input>
+                                                    </el-form-item>
+                                                    <el-form-item label="detail" :label-width="formLabelWidth">
+                                                        <el-input v-model="editExperience.detail" name="detail"
+                                                            autocomplete="off"></el-input>
+                                                    </el-form-item>
+                                                    <span style="font-size: 18px;">{{i.name|safe}}</span>
+                                                    <input type="hidden" name="id" value="{{ userID }}">
+                                                    <el-button native-type="submit" style="margin-left: 88%;">save
+                                                    </el-button>
+                                                </el-form>
+                                            </el-dialog> -->
                                     </div>
                                     <div>{{ i.detail|safe }}</div>
                                 </el-card>
@@ -224,7 +270,6 @@
                         </el-col>
                     </el-row>
                 </el-tab-pane>
-                <el-tab-pane label="others">OTHERS</el-tab-pane>
             </el-tabs>
         </div>
     </el-col>

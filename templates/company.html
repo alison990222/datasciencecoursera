@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block webhead %}
+<meta charset="UTF-8">
+<meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% endblock %}
+
+{% block webbody %}
+
+<el-row :gutter="20">
+    <el-col :span="8">
+        <div style="margin-bottom: 20px;">
+            <el-row type="flex" justify="center">
+                <!-- <div class="bg-layout"> -->
+                <el-avatar shape="square" :size="150" :src="profilePic" @error="errorHandler">
+                    <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+                </el-avatar>
+                <!-- </div> -->
+            </el-row>
+            <el-row align="bottom" type="flex" justify="center">
+                <!-- <div class="bg-layout"> -->
+                <h1>{{name}}</h1>
+                <!-- </div> -->
+            </el-row>
+        </div>
+    </el-col>
+    <el-col :span="16">
+        <div style="margin-bottom: 20px;">
+            <h2>Location: {{location}}</h2>
+            <h2>Type: {{workType}}</h2>
+            <h2>Position: {{position}}</h2>
+            <a href="{{ linkedin }}" target="_blank"><i class="fab fa-linkedin fa-2x"
+                    style="margin-right: 10px;"></i></a>
+            <a href="{{ email }}" target="_blank"><i class="fas fa-envelope-square fa-2x"
+                    style="margin-right: 10px;"></i></a>
+            <a href="{{ stackoverflow }}" target="_blank"><i class="fab fa-stack-overflow fa-2x"
+                    style="margin-right: 10px;"></i></a>
+            <a href="{{ github }}" target="_blank"><i class="fab fa-github-square fa-2x"
+                    style="margin-right: 10px;"></i></a>
+        </div>
+    </el-col>
+</el-row>
+<el-row :gutter="20">
+    <div style="margin-bottom: 20px;">
+        <el-button-group style="width: 100%;">
+            <el-button plain style="width: 49%" type="text" @click="dialogTableVisible = true">My Application
+            </el-button>
+            <!-- <el-dialog title="My Application" :visible.sync="dialogTableVisible" :close-on-click-modal="false">
+                <el-table :data="{{appli|safe}}">
+                    <el-table-column property="company" label="Company" width="150"></el-table-column>
+                    <el-table-column property="job" label="Job" width="200"></el-table-column>
+                    <el-table-column property="time" label="Date"></el-table-column>
+                    <el-table-column property="status" label="Status"></el-table-column>
+                </el-table>
+            </el-dialog> -->
+
+            <el-button plain style="width: 49%;" type="text" @click="dialogFormVisible = true">Edit Profile</el-button>
+            <!-- <el-dialog title="Edit Profile" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+                <H1>Personal Info</H1>
+                <el-form :model="editform" method="post" action="{% url 'editProfile' %}">
+                    {% csrf_token %}
+                    <el-form-item label="Name" :label-width="formLabelWidth">
+                        <el-input placeholder={{name}} v-model="editform.name" name="username" autocomplete="off">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="Location" :label-width="formLabelWidth">
+                        <el-input placeholder={{location}} v-model="editform.location" name="location"
+                            autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Position" :label-width="formLabelWidth">
+                        <el-input placeholder={{position}} v-model="editform.position" name="position"
+                            autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Job Type" :label-width="formLabelWidth">
+                        <el-checkbox-group v-model="editform.workType" name="workType">
+                            <el-checkbox label="Full time" name="workType"></el-checkbox>
+                            <el-checkbox label="Part time" name="workType"></el-checkbox>
+                            <el-checkbox label="Remote" name="workType"></el-checkbox>
+                            <el-checkbox label="Local" name="workType"></el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <h1>Contact</h1>
+                    <el-form-item label="Linkedin Link" :label-width="formLabelWidth">
+                        <el-input placeholder={{linkedin}} v-model="editform.linkedin" name="linkedin"
+                            autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Github Link" :label-width="formLabelWidth">
+                        <el-input placeholder={{github}} v-model="editform.github" name="github" autocomplete="off">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="Stack Overflow" :label-width="formLabelWidth">
+                        <el-input placeholder={{stackoverflow}} v-model="editform.stack" name="stack"
+                            autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="email" :label-width="formLabelWidth">
+                        <el-input placeholder={{email}} v-model="editform.email" name="email" autocomplete="off">
+                        </el-input>
+                    </el-form-item>
+                    <input type="hidden" name="id" value="{{ userID }}">
+                    <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
+                </el-form>
+            </el-dialog> -->
+        </el-button-group>
+        <el-button plain style="margin-left: 30%; width: 40%;" type="success" @click="dialogTableVisible = true">Apply
+        </el-button>
+    </div>
+</el-row>
+<el-row :gutter="20">
+    <el-col>
+        <div>
+            <el-tabs tab-position="left">
+                <el-tab-pane label="Company Info">
+                    
+                </el-tab-pane>
+                <el-tab-pane label="Company Life">
+                    
+                </el-tab-pane>
+                <el-tab-pane label="Opening Position">
+                    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+                        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+                        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+                        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+                        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+                      </el-tabs>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </el-col>
+</el-row>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
