@@ -1,4 +1,4 @@
-{% load static from staticfiles %}
+<!-- {% load static from staticfiles %} -->
 <!DOCTYPE html>
 <html>
 
@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <!-- 引入组件库 -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css"
     integrity="sha384-v8BU367qNbs/aIZIxuivaU55N5GPF89WBerHoGA4QTcbUjYiLQtKdrfXnqAcXyTv" crossorigin="anonymous">
 
@@ -56,14 +57,16 @@
         <el-container>
 
           {% include 'navbar.html' %}
+          {% block header %}
 
+          {% endblock %}
 
           <el-main>
             <el-row>
               <!-- {#  主体#} -->
               <el-col :span="15" :offset="5">
-                
-        
+
+
                 {% block webbody %}
 
                 {% endblock %}
@@ -103,7 +106,7 @@
         inputVisible: false, //for tag in coder's exp
         inputValue: '', //for tag in coder's exp
         dynamicTags: [""],
-        editform:{
+        editform: {
           name: "",
           location: "",
           workType: [],
@@ -113,14 +116,14 @@
           email: "",
           github: "",
         },
-        editExperience:{
+        editExperience: {
           company: "",
           position: "",
           detail: "",
           field: "",
           time: "",
         },
-        addSkill:{
+        addSkill: {
           company: "",
           position: "",
           detail: "",
@@ -136,7 +139,16 @@
         // experience: {{experience|safe}},
         // {% block js %} {% endblock %}
         activeName: 'first',
-        
+        update: {
+          company: '',
+          position: '',
+          detail: '',
+          field: '',
+          time: '',
+          id: '',
+        },
+        dialogUpdateVisible: false,
+
       };
     },
     methods: {
@@ -166,6 +178,27 @@
       handleClick(tab, event) {
         console.log(tab, event);
       },
+      setCurrent: function (e) {
+        this.currentId = 'user.id';
+        this.update.company = '';
+        this.update.position = 'user.phone';
+        this.update.detail = 'user.email';
+        this.update.field = 'user.is_active';
+        this.update.time = 'user.is_active';
+        this.dialogUpdateVisible = true;
+        console.log(e);
+      },
+      handleEdit(id, row) {
+        console.log(row);
+        this.dialogUpdateVisible = true;
+        this.update.company = row.name;
+        // this.update.position = 'user.phone';
+        this.update.detail = row.detail;
+        this.update.id = id;
+        console.log(this.update.id);
+        // this.update.field = 'user.is_active';
+        // this.update.time = 'user.is_active';
+      },
       // expFunc:function(e){
       //   console.log(e);
       //   console.log(e.path[1].id);
@@ -181,9 +214,9 @@
       //     console.log("2true");
       //   }
       //}
-        
-        // this.experienceVisible = true;
-      
+
+      // this.experienceVisible = true;
+
 
     }
   })

@@ -33,6 +33,14 @@ def getUserInfo(request):
                     'time': appli.time.strftime("%Y-%m-%d %H:%M:%S"),
                     'status': appli.status,
                 })
+
+            experienceList = []
+            for exp in experience:
+                experienceList.append({
+                    'name': exp.name,
+                    'detail': exp.detail,
+                })
+
             print(appliList)
             context['userID'] = userID
             context['name'] = user.username
@@ -43,7 +51,7 @@ def getUserInfo(request):
             context['industryType'] = user.industryType
             context['skillType'] = user.skillType
 
-            context['experience'] = experience
+            context['experience'] = experienceList
             context['project'] = project
             context['appli'] = appliList
 
@@ -93,7 +101,7 @@ def getUserInfo(request):
 @require_http_methods(["GET"])
 def getHomePage(request):
     context = {}
-    return render(request, 'base.html', context)
+    return render(request, 'home.html', context)
 
 
 @require_http_methods(["POST"])
