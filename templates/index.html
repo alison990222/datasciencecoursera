@@ -22,23 +22,30 @@
             </el-row>
             <el-row align="bottom" type="flex" justify="center">
                 <!-- <div class="bg-layout"> -->
-                <h1>{{name}}</h1>
+                <h1>{{user.username}}</h1>
                 <!-- </div> -->
             </el-row>
         </div>
     </el-col>
     <el-col :span="16">
         <div style="margin-bottom: 20px;">
-            <h2>Location: {{location}}</h2>
+            <h2>Location: {{user.location}}</h2>
             <h2>Type: {{workType}}</h2>
-            <h2>Position: {{position}}</h2>
-            <a href="{{ linkedin }}" target="_blank"><i class="fab fa-linkedin fa-2x"
+            <h2>Position: {{user.position}}</h2>
+            <a href="{{ user.linkedin }}" target="_blank"><i class="fab fa-linkedin fa-2x"
                     style="margin-right: 10px;"></i></a>
-            <a href="{{ email }}" target="_blank"><i class="fas fa-envelope-square fa-2x"
+
+            <a @click="emailVisible=true" target="_blank"><i class="fas fa-envelope-square fa-2x"
                     style="margin-right: 10px;"></i></a>
-            <a href="{{ stackoverflow }}" target="_blank"><i class="fab fa-stack-overflow fa-2x"
+            <el-dialog title="{{user.username}} 's Email Address" :visible.sync="emailVisible" width="30%" center>
+                <h3 style="text-align: center;">{{ user.email }}</h3>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="emailVisible=false">close</el-button>
+                </span>
+            </el-dialog>
+            <a href="{{ user.stackoverflow }}" target="_blank"><i class="fab fa-stack-overflow fa-2x"
                     style="margin-right: 10px;"></i></a>
-            <a href="{{ github }}" target="_blank"><i class="fab fa-github-square fa-2x"
+            <a href="{{ user.github }}" target="_blank"><i class="fab fa-github-square fa-2x"
                     style="margin-right: 10px;"></i></a>
         </div>
     </el-col>
@@ -46,9 +53,9 @@
 <el-row :gutter="20">
     <div style="margin-bottom: 20px;">
         <el-button-group style="width: 100%;">
-            <el-button plain style="width: 49%" type="text" @click="dialogTableVisible = true">My Application
+            <el-button plain style="width: 49%" type="text" @click="appicationVisible = true">My Application
             </el-button>
-            <el-dialog title="My Application" :visible.sync="dialogTableVisible" :close-on-click-modal="false">
+            <el-dialog title="My Application" :visible.sync="appicationVisible" :close-on-click-modal="false">
                 <el-table :data="{{appli|safe}}">
                     <el-table-column property="company" label="Company" width="150"></el-table-column>
                     <el-table-column property="job" label="Job" width="200"></el-table-column>
@@ -57,25 +64,25 @@
                 </el-table>
             </el-dialog>
 
-            <el-button plain style="width: 49%;" type="text" @click="dialogFormVisible = true">Edit Profile</el-button>
-            <el-dialog title="Edit Profile" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+            <el-button plain style="width: 49%;" type="text" @click="editProfileVisivle = true">Edit Profile</el-button>
+            <el-dialog title="Edit Profile" :visible.sync="editProfileVisivle" :close-on-click-modal="false">
                 <H1>Personal Info</H1>
-                <el-form :model="editform" method="post" action="{% url 'editProfile' %}">
+                <el-form :model="editProfile" method="post" action="{% url 'getUserInfo' user.id %}">
                     {% csrf_token %}
                     <el-form-item label="Name" :label-width="formLabelWidth">
-                        <el-input placeholder={{name}} v-model="editform.name" name="username" autocomplete="off">
+                        <el-input placeholder="{{user.username}}" v-model="editProfile.name" name="username" autocomplete="off">
                         </el-input>
                     </el-form-item>
                     <el-form-item label="Location" :label-width="formLabelWidth">
-                        <el-input placeholder={{location}} v-model="editform.location" name="location"
+                        <el-input placeholder="{{user.location}}" v-model="editProfile.location" name="location"
                             autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Position" :label-width="formLabelWidth">
-                        <el-input placeholder={{position}} v-model="editform.position" name="position"
+                        <el-input placeholder="{{user.position}}" v-model="editProfile.position" name="position"
                             autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Job Type" :label-width="formLabelWidth">
-                        <el-checkbox-group v-model="editform.workType" name="workType">
+                        <el-checkbox-group v-model="editProfile.workType" name="workType">
                             <el-checkbox label="Full time" name="workType"></el-checkbox>
                             <el-checkbox label="Part time" name="workType"></el-checkbox>
                             <el-checkbox label="Remote" name="workType"></el-checkbox>
@@ -84,22 +91,23 @@
                     </el-form-item>
                     <h1>Contact</h1>
                     <el-form-item label="Linkedin Link" :label-width="formLabelWidth">
-                        <el-input placeholder={{linkedin}} v-model="editform.linkedin" name="linkedin"
+                        <el-input placeholder={{user.linkedin}} v-model="editProfile.linkedin" name="linkedin"
                             autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Github Link" :label-width="formLabelWidth">
-                        <el-input placeholder={{github}} v-model="editform.github" name="github" autocomplete="off">
+                        <el-input placeholder={{user.github}} v-model="editProfile.github" name="github" autocomplete="off">
                         </el-input>
                     </el-form-item>
                     <el-form-item label="Stack Overflow" :label-width="formLabelWidth">
-                        <el-input placeholder={{stackoverflow}} v-model="editform.stack" name="stack"
+                        <el-input placeholder={{user.stackoverflow}} v-model="editProfile.stack" name="stack"
                             autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="email" :label-width="formLabelWidth">
-                        <el-input placeholder={{email}} v-model="editform.email" name="email" autocomplete="off">
+                        <el-input placeholder={{user.email}} v-model="editProfile.email" name="email" autocomplete="off">
                         </el-input>
                     </el-form-item>
-                    <input type="hidden" name="id" value="{{ userID }}">
+                    <input type="hidden" name="id" value="{{ user.id }}">
+                    <input type="hidden" name="form" value="personalInfo">
                     <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
                 </el-form>
             </el-dialog>
@@ -120,43 +128,62 @@
                                     {{i|safe}}
                                 </el-tag>
                                 {% endfor%}
-                                
-                                <el-button type="text" @click="editSkillExp = true" icon="el-icon-plus"
+
+                                <el-button type="text" @click="addExpVisible = true" icon="el-icon-plus"
                                     style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
-                                <el-dialog title="Add Experience and Skill" :visible.sync="editSkillExp"
+                                <el-dialog title="Add Experience and Industry" :visible.sync="addExpVisible"
                                     :close-on-click-modal="false">
-                                    <H1>name</H1>
-                                    <el-form :model="addSkill" method="post" action="{% url 'editProfile' %}">
+                                    <el-form :model="addExp" method="post" action="{% url 'getUserInfo' user.id  %}">
                                         {% csrf_token %}
-                                        <el-form-item label="company" :label-width="formLabelWidth">
-                                            <el-input v-model="addSkill.company" name="company" autocomplete="off">
+                                        <el-form-item label="Company" :label-width="formLabelWidth">
+                                            <el-input v-model="addExp.company" name="company" autocomplete="off">
                                             </el-input>
                                         </el-form-item>
-                                        <el-form-item label="position" :label-width="formLabelWidth">
-                                            <el-input v-model="addSkill.position" name="position" autocomplete="off">
+                                        <el-form-item label="Position" :label-width="formLabelWidth">
+                                            <el-input v-model="addExp.position" name="position" autocomplete="off">
                                             </el-input>
                                         </el-form-item>
-                                        <el-form-item label="detail" :label-width="formLabelWidth">
-                                            <el-input type="textarea" v-model="addSkill.detail" name="detail"
+                                        <el-form-item label="Field" :label-width="formLabelWidth">
+                                            <el-input v-model="addExp.field" name="field" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Time" :label-width="formLabelWidth">
+                                            <el-col :span="11">
+                                                <el-date-picker type="month" placeholder="from"
+                                                    v-model="addExp.datefrom" name="datefrom"></el-date-picker>
+                                            </el-col>
+                                            <el-col :span="2">
+                                                <div>TO</div>
+                                            </el-col>
+                                            <el-col :span="11">
+                                                <el-date-picker type="month" placeholder="to" v-model="addExp.dateto"
+                                                    name="dateto"></el-date-picker>
+                                            </el-col>
+                                        </el-form-item>
+                                        <el-form-item label="Detail" :label-width="formLabelWidth">
+                                            <el-input type="textarea" v-model="addExp.detail" name="detail"
                                                 autocomplete="off">
                                             </el-input>
                                         </el-form-item>
-                                        <el-form-item label="industry" :label-width="formLabelWidth">
-                                            {% for i in industryType %}
-                                            <el-tag effect="plain" style="margin-left: 5px;" closable
-                                                @close="handleClose(tag)">
-                                                {{i|safe}}
-                                            </el-tag>
-                                            {% endfor%}
-
-                                            <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue"
-                                                ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm"
-                                                @blur="handleInputConfirm">
-                                            </el-input>
-                                            <el-button v-else class="button-new-tag" size="small" @click="showInput">+
-                                                New Tag</el-button>
+                                        <el-form-item label="Industry" :label-width="formLabelWidth">
+                                            <el-checkbox-group v-model="addExp.industry">
+                                                <el-checkbox label="AR / VR" name="industry"></el-checkbox>
+                                                <el-checkbox label="Biotech" name="industry"></el-checkbox>
+                                                <el-checkbox label="Accounting & Legal" name="industry"></el-checkbox>
+                                                <el-checkbox label="Media" name="industry"></el-checkbox>
+                                                <el-checkbox label="Retail" name="industry"></el-checkbox>
+                                                <el-checkbox label="Gaming" name="industry"></el-checkbox>
+                                                <el-checkbox label="Fintech" name="industry"></el-checkbox>
+                                                <el-checkbox label="Healthcare" name="industry"></el-checkbox>
+                                                <el-checkbox label="Manufacturing" name="industry"></el-checkbox>
+                                                <el-checkbox label="Art" name="industry"></el-checkbox>
+                                                <el-checkbox label="Banking" name="industry"></el-checkbox>
+                                                <el-checkbox label="Aerospace" name="industry"></el-checkbox>
+                                                <el-checkbox label="Others" name="industry"></el-checkbox>
+                                            </el-checkbox-group>
                                         </el-form-item>
-                                        <input type="hidden" name="id" value="{{ userID }}">
+                                        <input type="hidden" name="id" value="{{ user.id }}">
+                                        <input type="hidden" name="form" value="addExp">
                                         <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
                                     </el-form>
                                 </el-dialog>
@@ -167,6 +194,13 @@
                         <el-col span="23" :offset="1">
                             <template>
                                 <el-table :data="{{experience}}" style="width: 100%">
+                                    <el-table-column width="1" >
+                                        <template slot-scope="scope">
+                                        <div style="display:none" >{% verbatim %}
+                                            {{ scope.row.id }}
+                                            {% endverbatim %}</div>
+                                    </template>
+                                    </el-table-column>
                                     <el-table-column>
                                         <template slot-scope="scope">
                                             <el-card class="box-card">
@@ -181,56 +215,37 @@
                                             </el-card>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column width="100">
+                                    <el-table-column width="80">
                                         <template slot-scope="scope">
-                                            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑
+                                            <el-button size="mini" @click="handleEditExp(scope.$index, scope.row)">Edit
                                             </el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
                             </template>
-                            <el-dialog title="Edit Experience" :visible.sync="dialogUpdateVisible"
+                            <el-dialog title="Edit Experience" :visible.sync="editExpVisible"
                                 :close-on-click-modal="false">
-                                <el-form id="#update" :model="update" ref="update" action="{% url 'editProfile' %}">
+                                <el-form id="#update" :model="update" ref="update" method="post"
+                                    action="{% url 'getUserInfo' user.id  %}">
                                     {% csrf_token %}
-                                    <el-form-item label="company" :label-width="formLabelWidth">
+                                    <el-form-item label="Position" :label-width="formLabelWidth">
+                                        <el-input v-model="update.position" name="position" autocomplete="off">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="Company" :label-width="formLabelWidth">
                                         <el-input v-model="update.company" name="company" autocomplete="off">
                                         </el-input>
                                     </el-form-item>
-                                    <!-- <el-form-item label="position" :label-width="formLabelWidth">
-                                        <el-input v-model="editExperience.position" name="position" autocomplete="off">
-                                        </el-input>
-                                    </el-form-item> -->
-                                    <el-form-item label="detail" :label-width="formLabelWidth">
-                                        <el-input type="textarea" autosize v-model="update.detail"></el-input>
+                                    <el-form-item label="Detail" :label-width="formLabelWidth">
+                                        <el-input type="textarea" v-model="update.detail" name="detail" autocomplete="off"></el-input>
                                     </el-form-item>
-                                    <!-- <el-form-item label="field" :label-width="formLabelWidth">
-                                        <el-input v-model="editExperience.field" name="field" autocomplete="off">
-                                        </el-input>
-                                    </el-form-item>
-                                    <el-form-item label="time" :label-width="formLabelWidth">
-                                        <el-input v-model="editExperience.time" name="time" autocomplete="off">
-                                        </el-input>
-                                    </el-form-item>
-                                     -->
-                                    <input type="hidden" name="id" v-model="update.id">
+                                    <input type="hidden" name="expid" v-model="update.id">
+                                    <input type="hidden" name="id" value="{{user.id}}">
+                                    <input type="hidden" name="form" value="editExp">
                                     <el-button native-type="submit" style="margin-left: 88%;">save
                                     </el-button>
                                 </el-form>
                             </el-dialog>
-
-                            <!-- {% for i in experience %}
-                            <el-row style="margin-top: 10px">
-                                
-                                <el-card class="box-card">
-                                    <div slot="header" class="clearfix">
-                                        <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                        
-                                    </div>
-                                    <div>{{ i.detail|safe }}</div>
-                                </el-card>
-                            </el-row>
-                            {% endfor%} -->
                         </el-col>
                     </el-row>
                 </el-tab-pane>
@@ -244,23 +259,131 @@
                                     {{i|safe}}
                                 </el-tag>
                                 {% endfor%}
+
+                                <el-button type="text" @click="addProjectVisible = true" icon="el-icon-plus"
+                                    style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
+                                <el-dialog title="Add Project and Skill" :visible.sync="addProjectVisible"
+                                    :close-on-click-modal="false">
+                                    <el-form :model="addPro" method="post" action="{% url 'getUserInfo' user.id  %}">
+                                        {% csrf_token %}
+                                        <el-form-item label="Project Name" :label-width="formLabelWidth">
+                                            <el-input v-model="addPro.name" name="name" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Field" :label-width="formLabelWidth">
+                                            <el-input v-model="addPro.field" name="field" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Time" :label-width="formLabelWidth">
+                                            <el-col :span="11">
+                                                <el-date-picker type="month" placeholder="select"
+                                                    v-model="addPro.date" name="date"></el-date-picker>
+                                            </el-col>                                            
+                                        </el-form-item>                                       
+                                        <el-form-item label="Github Link" :label-width="formLabelWidth">
+                                            <el-input v-model="addPro.github" name="github" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Detail" :label-width="formLabelWidth">
+                                            <el-input type="textarea" v-model="addPro.detail" name="detail"
+                                                autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Skill" :label-width="formLabelWidth">
+                                            <el-checkbox-group v-model="addPro.skill">
+                                                <el-checkbox label="C/C++" name="skillType"></el-checkbox>
+                                                <el-checkbox label="Python" name="skillType"></el-checkbox>
+                                                <el-checkbox label="Java" name="skillType"></el-checkbox>
+                                                <el-checkbox label="JS" name="skillType"></el-checkbox>
+                                                <el-checkbox label="PHP" name="skillType"></el-checkbox>
+                                                <el-checkbox label="R" name="skillType"></el-checkbox>
+                                                <el-checkbox label="Ruby" name="skillType"></el-checkbox>
+                                            </el-checkbox-group>
+                                        </el-form-item>
+                                        <input type="hidden" name="id" value="{{ user.id }}">
+                                        <input type="hidden" name="form" value="addPro">
+                                        <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
+                                    </el-form>
+                                </el-dialog>
                             </div>
                         </el-col>
                     </el-row>
                     <el-row style="margin-top: 10px">
                         <el-col span="23" :offset="1">
-                            {% for i in project %}
-                            <el-row style="margin-top: 10px">
-                                <el-card class="box-card">
-                                    <div slot="header" class="clearfix">
-                                        <span style="font-size: 18px;">{{i.name|safe}}</span>
-                                    </div>
-                                    <div>{{ i.detail|safe }}</div>
-                                </el-card>
-                            </el-row>
-                            {% endfor%}
+                            <template>
+                                <el-table :data="{{project}}" style="width: 100%">
+                                    <el-table-column width="1" >
+                                        <template slot-scope="scope">
+                                        <div style="display:none" >{% verbatim %}
+                                            {{ scope.row.id }}
+                                            {% endverbatim %}</div>
+                                    </template>
+                                    </el-table-column>
+                                    <el-table-column>
+                                        <template slot-scope="scope">
+                                            <el-card class="box-card">
+                                                <div slot="header" class="clearfix">
+                                                    <span style="font-size: 18px;">{% verbatim %}
+                                                        {{ scope.row.name }}
+                                                        {% endverbatim %} </span>
+                                                </div>
+                                                <div>{% verbatim %}
+                                                    {{ scope.row.detail }}
+                                                    {% endverbatim %} </div>
+                                            </el-card>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column width="80">
+                                        <template slot-scope="scope">
+                                            <el-button size="mini" @click="handleEditProject(scope.row)">Edit
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </template>
+                            <el-dialog title="Edit Project" :visible.sync="editSkillVisible"
+                                :close-on-click-modal="false">
+                                <el-form id="#updatePro" :model="updatePro" ref="updatePro" method="post"
+                                    action="{% url 'getUserInfo' user.id  %}">
+                                    {% csrf_token %}
+                                    <el-form-item label="Project Name" :label-width="formLabelWidth">
+                                        <el-input v-model="updatePro.name" name="name" autocomplete="off">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="Detail" :label-width="formLabelWidth">
+                                        <el-input type="textarea" v-model="updatePro.detail" name="detail" autocomplete="off"></el-input>
+                                    </el-form-item>
+                                    <input type="hidden" name="Proid" v-model="updatePro.id">
+                                    <input type="hidden" name="id" value="{{user.id}}">
+                                    <input type="hidden" name="form" value="editPro">
+                                    <el-button native-type="submit" style="margin-left: 88%;">save
+                                    </el-button>
+                                </el-form>
+                            </el-dialog>
                         </el-col>
                     </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="Others">
+                    <el-button type="text" @click="addOtherVisible = true" icon="el-icon-plus"
+                                    style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
+                                <el-dialog title="Add license and certification" :visible.sync="addOtherVisible"
+                                    :close-on-click-modal="false">
+                                    <el-form :model="addOther" method="post" action="{% url 'getUserInfo' user.id  %}">
+                                        {% csrf_token %}
+                                        <el-form-item label="Name" :label-width="formLabelWidth">
+                                            <el-input v-model="addOther.name" name="name" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Detail" :label-width="formLabelWidth">
+                                            <el-input type="textarea" v-model="addOther.detail" name="detail" autocomplete="off">
+                                            </el-input>
+                                        </el-form-item>
+                                        
+                                        <input type="hidden" name="id" value="{{ user.id }}">
+                                        <input type="hidden" name="form" value="addOther">
+                                        <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
+                                    </el-form>
+                                </el-dialog>
                 </el-tab-pane>
             </el-tabs>
         </div>

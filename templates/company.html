@@ -14,98 +14,70 @@
     <el-col :span="8">
         <div style="margin-bottom: 20px;">
             <el-row type="flex" justify="center">
-                <!-- <div class="bg-layout"> -->
                 <el-avatar shape="square" :size="150" :src="profilePic" @error="errorHandler">
                     <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
                 </el-avatar>
-                <!-- </div> -->
             </el-row>
             <el-row align="bottom" type="flex" justify="center">
-                <!-- <div class="bg-layout"> -->
-                <h1>{{name}}</h1>
-                <!-- </div> -->
+                <h1>{{cpy.name}}</h1>
             </el-row>
         </div>
+
     </el-col>
     <el-col :span="16">
-        <div style="margin-bottom: 20px;">
-            <h2>Location: {{location}}</h2>
-            <h2>Type: {{workType}}</h2>
-            <h2>Position: {{position}}</h2>
-            <a href="{{ linkedin }}" target="_blank"><i class="fab fa-linkedin fa-2x"
-                    style="margin-right: 10px;"></i></a>
-            <a href="{{ email }}" target="_blank"><i class="fas fa-envelope-square fa-2x"
-                    style="margin-right: 10px;"></i></a>
-            <a href="{{ stackoverflow }}" target="_blank"><i class="fab fa-stack-overflow fa-2x"
-                    style="margin-right: 10px;"></i></a>
-            <a href="{{ github }}" target="_blank"><i class="fab fa-github-square fa-2x"
-                    style="margin-right: 10px;"></i></a>
-        </div>
+        <h2>Location: &nbsp; &nbsp;{{cpy.location}}</h2>
+        <h2>Industry: &nbsp; &nbsp;{{cpy.industry}}</h2>
+        <el-divider><i class="el-icon-aim"></i></el-divider>
+        <span>{{cpy.intro}}</span>
     </el-col>
 </el-row>
 <el-row :gutter="20">
     <div style="margin-bottom: 20px;">
         <el-button-group style="width: 100%;">
-            <el-button plain style="width: 49%" type="text" @click="dialogTableVisible = true">My Application
+            <el-button plain style="width: 49%" type="text" @click="C_applicationVisible = true">Application
             </el-button>
-            <!-- <el-dialog title="My Application" :visible.sync="dialogTableVisible" :close-on-click-modal="false">
+            <el-dialog title="Received Application" :visible.sync="C_applicationVisible" :close-on-click-modal="false">
                 <el-table :data="{{appli|safe}}">
-                    <el-table-column property="company" label="Company" width="150"></el-table-column>
-                    <el-table-column property="job" label="Job" width="200"></el-table-column>
-                    <el-table-column property="time" label="Date"></el-table-column>
-                    <el-table-column property="status" label="Status"></el-table-column>
-                </el-table>
-            </el-dialog> -->
+                    <el-table-column property="applicant" label="Applicant" width="150"></el-table-column>
+                    <el-table-column property="job" label="Position"></el-table-column>
+                    <el-table-column property="time" label="Submitted Date" width="200"></el-table-column>
 
-            <el-button plain style="width: 49%;" type="text" @click="dialogFormVisible = true">Edit Profile</el-button>
-            <!-- <el-dialog title="Edit Profile" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-                <H1>Personal Info</H1>
-                <el-form :model="editform" method="post" action="{% url 'editProfile' %}">
-                    {% csrf_token %}
-                    <el-form-item label="Name" :label-width="formLabelWidth">
-                        <el-input placeholder={{name}} v-model="editform.name" name="username" autocomplete="off">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="Location" :label-width="formLabelWidth">
-                        <el-input placeholder={{location}} v-model="editform.location" name="location"
-                            autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Position" :label-width="formLabelWidth">
-                        <el-input placeholder={{position}} v-model="editform.position" name="position"
-                            autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Job Type" :label-width="formLabelWidth">
-                        <el-checkbox-group v-model="editform.workType" name="workType">
-                            <el-checkbox label="Full time" name="workType"></el-checkbox>
-                            <el-checkbox label="Part time" name="workType"></el-checkbox>
-                            <el-checkbox label="Remote" name="workType"></el-checkbox>
-                            <el-checkbox label="Local" name="workType"></el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <h1>Contact</h1>
-                    <el-form-item label="Linkedin Link" :label-width="formLabelWidth">
-                        <el-input placeholder={{linkedin}} v-model="editform.linkedin" name="linkedin"
-                            autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Github Link" :label-width="formLabelWidth">
-                        <el-input placeholder={{github}} v-model="editform.github" name="github" autocomplete="off">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="Stack Overflow" :label-width="formLabelWidth">
-                        <el-input placeholder={{stackoverflow}} v-model="editform.stack" name="stack"
-                            autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="email" :label-width="formLabelWidth">
-                        <el-input placeholder={{email}} v-model="editform.email" name="email" autocomplete="off">
-                        </el-input>
-                    </el-form-item>
-                    <input type="hidden" name="id" value="{{ userID }}">
-                    <el-button native-type="submit" style="margin-left: 88%;">save</el-button>
-                </el-form>
-            </el-dialog> -->
+                    <el-table-column align="right">
+                        <template slot-scope="scope">
+                            <el-button size="mini" @click="viewedAppli(scope.$index, scope.row)">Viewed</el-button>
+                            <el-button size="mini" @click="moreAppli(scope.$index, scope.row)">More</el-button>
+                            <el-button size="mini" type="danger" @click="deleteAppli(scope.$index, scope.row)">Delete
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-dialog>
+            <el-button plain style="width: 49%;" type="text" @click="C_editInfoVisible = true">Edit Info</el-button>
         </el-button-group>
-        <el-button plain style="margin-left: 30%; width: 40%;" type="success" @click="dialogTableVisible = true">Apply
-        </el-button>
+        <el-button plain style="margin-left: 30%; margin-top: 10px; width: 40%;" type="success"
+            @click="C_applyVisible = true">Apply</el-button>
+        <el-dialog title="Apply" :visible.sync="C_applyVisible" :close-on-click-modal="false">
+            <el-form :model="apply" method="post" action="{% url 'getCompanyInfo' cpy.id  %}">
+                {% csrf_token %}
+                <el-form-item label="Position" :label-width="formLabelWidth">
+                    <el-select v-model="apply.position" placeholder="select" name="position">
+                        {% for i in jobList %}
+                        <el-option value="{{i.name|safe}}" label="{{i.name|safe}}" ></el-option>
+                        <!-- <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option> -->
+                        {% endfor %}
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="Extra info" :label-width="formLabelWidth">
+                    <el-input type="textarea" v-model="apply.detail" name="detail" autocomplete="off"
+                        placeholder="anything you want us to know!">
+                    </el-input>
+                </el-form-item>
+                <input type="hidden" name="id" value="{{ cpy.id }}">
+                <input type="hidden" name="form" value="apply">
+                <el-button native-type="submit" style="margin-left: 88%;">Submint</el-button>
+            </el-form>
+        </el-dialog>
     </div>
 </el-row>
 <el-row :gutter="20">
@@ -113,25 +85,78 @@
         <div>
             <el-tabs tab-position="left">
                 <el-tab-pane label="Company Info">
-                    
-                </el-tab-pane>
-                <el-tab-pane label="Company Life">
-                    
+                    <el-row :gutter="20">
+                        <el-col :span="20" :offset="2">
+                            <el-table :data="{{basicInfo|safe}}" stripe style="width: 100%">
+                                <el-table-column prop="item">
+                                </el-table-column>
+                                <el-table-column prop="content">
+                                </el-table-column>
+                            </el-table>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                        <el-col :span="20" :offset="1">
+                            <h2 style="text-align: center;">About us</h2>
+                        </el-col>
+
+                        <el-col :span="20" :offset="1">
+                            <el-divider content-position="left">
+                                <h3>Who we are</h3>
+                            </el-divider>
+                            <span>{{cpy.description}}</span>
+                            <el-divider content-position="left">
+                                <h3>Vision</h3>
+                            </el-divider>
+                            <span>{{cpy.vision}}</span>
+                            <el-divider content-position="left">
+                                <h3>Company Visit</h3>
+                            </el-divider>
+                            <span>{{cpy.companyVisit}}</span>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="20" style="margin-top: 20px;">
+                        <el-col :span="8" :offset="8">
+                            <a href="{{ cpy.linkedin }}" target="_blank"><i class="fab fa-linkedin fa-2x"
+                                    style="margin-right: 10px;"></i></a>
+                            <a href="{{ cpy.email }}" target="_blank"><i class="fas fa-envelope-square fa-2x"
+                                    style="margin-right: 10px;"></i></a>
+                            <a href="{{ cpy.twitter }}" target="_blank"><i class="fab fa-twitter-square fa-2x"
+                                    style="margin-right: 10px;"></i></a>
+                            <a href="{{ cpy.ins }}" target="_blank"><i class="fab fa-instagram-square fa-2x"
+                                    style="margin-right: 10px;"></i></a>
+                            <a href="{{ cpy.facebook }}" target="_blank"><i class="fab fa-facebook-square fa-2x"
+                                    style="margin-right: 10px;"></i></a>
+                        </el-col>
+                    </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="Opening Position">
-                    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-                        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-                        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-                        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-                        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-                      </el-tabs>
+                    <el-button type="text" @click="" icon="el-icon-plus"
+                        style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
+                    <el-button type="text" @click="" icon="el-icon-edit"
+                        style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
+                    <el-button type="text" @click="" icon="el-icon-minus"
+                        style="margin-right: 5px; font-size: 1.3rem; float: right;"></el-button>
+                    <el-tabs v-model="jobTab" type="card">
+                        {% for i in jobList %}
+                        <el-tab-pane label="{{i.name}}">
+                            <el-col :span="20" :offset="1">
+                                <h3>Team Mission</h3>
+                                <div>{{i.mission}}</div>
+                                <h3>Team Current Stage</h3>
+                                <div>{{i.stage}}</div>
+                                <h3>What you will do</h3>
+                                <div>{{i.work}}</div>
+                                <h3>Contact</h3>
+                                <div>{{i.contact}}</div>
+                            </el-col>
+                        </el-tab-pane>
+                        {% endfor %}
+                    </el-tabs>
                 </el-tab-pane>
             </el-tabs>
         </div>
     </el-col>
 </el-row>
-{% endblock %}
-
-{% block js %}
 
 {% endblock %}

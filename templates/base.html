@@ -14,8 +14,6 @@
   <link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css"
     integrity="sha384-v8BU367qNbs/aIZIxuivaU55N5GPF89WBerHoGA4QTcbUjYiLQtKdrfXnqAcXyTv" crossorigin="anonymous">
-
-
   {% block webhead %}
 
   {% endblock %}
@@ -65,8 +63,6 @@
             <el-row>
               <!-- {#  主体#} -->
               <el-col :span="15" :offset="5">
-
-
                 {% block webbody %}
 
                 {% endblock %}
@@ -78,22 +74,13 @@
               </el-col> -->
             </el-row>
           </el-main>
-
           <el-footer>
             {% include 'footer.html' %}
           </el-footer>
-
-
         </el-container>
       </el-col>
     </el-row>
-
-
   </div>
-
-
-
-
 </body>
 
 <script>
@@ -101,12 +88,8 @@
     el: '#app',
     data() {
       return {
-        activeIndex: '1',
-        activeIndex2: '1',
-        inputVisible: false, //for tag in coder's exp
-        inputValue: '', //for tag in coder's exp
-        dynamicTags: [""],
-        editform: {
+        /*index.html*/
+        editProfile: {
           name: "",
           location: "",
           workType: [],
@@ -116,28 +99,36 @@
           email: "",
           github: "",
         },
-        editExperience: {
+        addPro: {
           company: "",
           position: "",
           detail: "",
           field: "",
-          time: "",
+          datefrom: "",
+          dateto: "",
+          skill: [],
         },
-        addSkill: {
-          company: "",
-          position: "",
+        addExp: {
+          name: "",
+          github: "",
           detail: "",
           field: "",
-          time: "",
+          date: "",
+          industry: [],
         },
-        dialogTableVisible: false,
-        dialogFormVisible: false,
-        experienceVisible: false,
-        editSkillExp: false,
+        addOther: {
+          name: "",
+          detail: "",
+        },
+        appicationVisible: false,
+        editProfileVisivle: false,
+        editExpVisible: false,
+        emailVisible: false,
+        addProjectVisible: false,
+        addExpVisible: false,
+        editSkillVisible: false,
+        addOtherVisible: false,
         formLabelWidth: '120px',
-        /*index.html*/
-        // experience: {{experience|safe}},
-        // {% block js %} {% endblock %}
         activeName: 'first',
         update: {
           company: '',
@@ -147,77 +138,42 @@
           time: '',
           id: '',
         },
-        dialogUpdateVisible: false,
-
+        updatePro: {
+          name: "",
+          github: "",
+          detail: "",
+          field: "",
+          date: "",
+          id: '',
+        },
+        /*index.html*/
+        C_applicationVisible: false,
+        C_editInfoVisible: false,
+        C_applyVisible: false,
+        apply: {
+          position: '',
+          detail: '',
+        },
       };
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(tag) {
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-      },
-
-      showInput() {
-        this.inputVisible = true;
-        this.$nextTick(_ => {
-          this.$refs.saveTagInput.$refs.input.focus();
-        });
-      },
-
-      handleInputConfirm() {
-        let inputValue = this.inputValue;
-        if (inputValue) {
-          this.dynamicTags.push(inputValue);
-        }
-        this.inputVisible = false;
-        this.inputValue = '';
-      },
-
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
-      setCurrent: function (e) {
-        this.currentId = 'user.id';
-        this.update.company = '';
-        this.update.position = 'user.phone';
-        this.update.detail = 'user.email';
-        this.update.field = 'user.is_active';
-        this.update.time = 'user.is_active';
-        this.dialogUpdateVisible = true;
-        console.log(e);
-      },
-      handleEdit(id, row) {
+      handleEditExp(id, row) {
         console.log(row);
-        this.dialogUpdateVisible = true;
-        this.update.company = row.name;
+        this.editExpVisible = true;
+        this.update.company = row.name.split('@').pop();
+        this.update.position = row.name.split('@')[0];
         // this.update.position = 'user.phone';
         this.update.detail = row.detail;
-        this.update.id = id;
+        this.update.id = row.id;
         console.log(this.update.id);
-        // this.update.field = 'user.is_active';
-        // this.update.time = 'user.is_active';
       },
-      // expFunc:function(e){
-      //   console.log(e);
-      //   console.log(e.path[1].id);
-      //   if(e.path[1].id == "1"){
-      //     // this.dialog.one = true;
-      //     this.tf[1] = true;
-      //     console.log("1true");
-      //   }
-      //   else if(e.path[1].id == "2"){
-      //     // this.dialog.two = true;
-      //     this.tf[2] = true;
-      //     console.log(this.tf[2])
-      //     console.log("2true");
-      //   }
-      //}
-
-      // this.experienceVisible = true;
-
-
+      handleEditProject(row) {
+        console.log(row);
+        this.editSkillVisible = true;
+        this.updatePro.name = row.name;
+        this.updatePro.detail = row.detail;
+        this.updatePro.id = row.id;
+      },
     }
   })
 </script>
