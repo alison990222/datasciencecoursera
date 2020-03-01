@@ -20,6 +20,7 @@ class coders(models.Model):
 
 class company(models.Model):
     name = models.CharField(max_length=50, null=True, default=None)
+    pic = models.URLField(max_length=250, null=True, default=None)
     industry = models.CharField(max_length=50, null=True, default=None)
     location = models.CharField(max_length=50, null=True, default=None)
     foundDate = models.DateTimeField(default=timezone.now)
@@ -63,14 +64,17 @@ class application(models.Model):
     job = models.ForeignKey(to=job, related_name="job_appli", null=True, blank=True, default=None,
                                  on_delete=models.CASCADE)
     feedback = models.CharField(max_length=1000, null=True, default=None)
- 
+    detail = models.CharField(max_length=1000, null=True, default=None)
 
 
 
 class experienceInfo(models.Model):
-    name = models.CharField(max_length=50, null=True, default=None)
+    company = models.CharField(max_length=50, null=True, default=None)
+    position = models.CharField(max_length=50, null=True, default=None)
     field = models.CharField(max_length=50, null=True, default=None)
     time = models.DateTimeField(default=timezone.now)
+    # datefrom
+    dateto = models.DateTimeField(default=timezone.now)
     link = models.URLField(max_length=250, null=True, default=None)
     detail = models.CharField(max_length=1000, null=True, default=None)
     coder = models.ForeignKey(to=coders, related_name="experience", null=True, blank=True, default=None,
@@ -78,10 +82,15 @@ class experienceInfo(models.Model):
 
 class projectInfo(models.Model):
     name = models.CharField(max_length=50)
-    field = models.CharField(max_length=50)
+    field = models.CharField(max_length=50, null=True, default=None)
     time = models.DateTimeField(default=timezone.now)
     github = models.URLField(max_length=250, null=True, default=None)
     detail = models.CharField(max_length=1000, null=True, default=None)
     coder = models.ForeignKey(to=coders, related_name="project", null=True, blank=True, default=None,
                                  on_delete=models.CASCADE)
 
+class otherInfo(models.Model):
+    name = models.CharField(max_length=50)
+    detail = models.CharField(max_length=1000, null=True, default=None)
+    coder = models.ForeignKey(to=coders, related_name="otherInfo", null=True, blank=True, default=None,
+                                 on_delete=models.CASCADE)
