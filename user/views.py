@@ -18,7 +18,7 @@ def getCompanyInfo(request, companyID):
             if postForm == "apply":
                 position = request.POST["position"]
                 appliObj = application(
-                    feedback = request.POST["detail"],
+                    detail = request.POST["detail"],
                 )
                 appliObj.save()
 
