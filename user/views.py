@@ -86,6 +86,7 @@ def getCompanyInfo(request, companyID):
 
 def getUserInfo(request, userID):
     context = {}
+    context['username'] = userID
     if request.method == 'POST':
         try:
             # data = request.POST -> this line gets all the data
@@ -187,11 +188,17 @@ def getUserInfo(request, userID):
             user.save()
 
         except Exception as e:
+            if request.user.is_authenticated and request.user.username == userID:
+                print(str(e))
+                user = coders()
+                user.username = userID
+                user.save()
+            context['msg'] = "success create"
             context['msg'] = str(e)
             context['errorNum'] = 1
     # if request.method == 'GET':
     try:
-        user = coders.objects.get(id=userID)
+        user = coders.objects.get(username=userID)
 
         industryType = user.industryType
         if industryType:
@@ -247,6 +254,12 @@ def getUserInfo(request, userID):
         context['errorNum'] = 0
 
     except Exception as e:
+        if request.user.is_authenticated and request.user.username == userID:
+            print(str(e))
+            user = coders()
+            user.username = userID
+            user.save()
+            context['msg'] = "success create"
         context['msg'] = str(e)
         context['errorNum'] = 1
         # raise Http404(e)

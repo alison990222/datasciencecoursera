@@ -4,17 +4,22 @@
     <el-menu-item index="7">Why Eniac</el-menu-item>
     <el-menu-item index="8">How Eniac works</el-menu-item>
     <el-menu-item index="9">FAQ</el-menu-item>
-    {#              <el-menu-item index="8"><a href="https://gist.github.com/ngauerh">Gist</a></el-menu-item>#}
-    <el-menu-item index="10" style="float: right;">Login</el-menu-item>
+    {#              <el-menu-item index="8"><a href="https://gist.github.com/ngauerh">Gist</a></el-menu-item>#} 
+    {% if request.user.is_authenticated %}
+    <el-menu-item index="10" style="float: right;"><a href="/accounts/logout/">Sign Out</a></el-menu-item>
     <el-menu-item index="11" style="float: right;">
-      <!-- <a href="{% url 'getUserInfo' user.id %}"> -->
+      <a href="/user/{{ request.user.username }} ">
       <div class="demo-type">
         <el-avatar :size="35" src="">
-          <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+          <img src="{{ request.user.socialaccount_set.all.0.get_avatar_url }}" />
         </el-avatar>
       </div>
-    </a>
+      </a>
     </el-menu-item>
+    {% else %}
+    <a href="/accounts/login/"><el-menu-item index="10" style="float: right;">Login</el-menu-item></a>
+    <a href="/accounts/signup/"><el-menu-item index="11" style="float: right;">Sign Up</el-menu-item></a>
+    {% endif %}
     {#              <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>#}
   </el-menu>
   <div class="line"></div>

@@ -50,6 +50,7 @@
         </div>
     </el-col>
 </el-row>
+{% if request.user.username == username %}
 <el-row :gutter="20">
     <div style="margin-bottom: 20px;">
         <el-button-group style="width: 100%;">
@@ -114,6 +115,7 @@
         </el-button-group>
     </div>
 </el-row>
+{% endif %}
 <el-row :gutter="20">
     <el-col>
         <div>
