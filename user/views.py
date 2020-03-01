@@ -28,6 +28,12 @@ def getCompanyInfo(request, companyID):
                 # jobModel.objects.get(name=position).job_appli.add(appliObj)
 
         except Exception as e:
+            if request.user.is_authenticated and request.user.username == userID:
+                company = cpy()
+                company.name = request.user.username
+                company.save()
+                context['msg'] = "success create company"
+                print(context['msg'])
             context['msg'] = str(e)
             context['errorNum'] = 1
         
@@ -78,6 +84,7 @@ def getCompanyInfo(request, companyID):
         context['msg'] = "success"
         context['errorNum'] = 0
     except Exception as e:
+
         context['msg'] = str(e)
         context['errorNum'] = 1
     return render(request, 'company.html', context)
@@ -188,11 +195,6 @@ def getUserInfo(request, userID):
             user.save()
 
         except Exception as e:
-            if request.user.is_authenticated and request.user.username == userID:
-                print(str(e))
-                user = coders()
-                user.username = userID
-                user.save()
             context['msg'] = "success create"
             context['msg'] = str(e)
             context['errorNum'] = 1
@@ -265,7 +267,6 @@ def getUserInfo(request, userID):
         # raise Http404(e)
         # return render(request, 'index.html', context)
     return render(request, 'index.html', context)
-
 
 @require_http_methods(["GET"])
 def getHomePage(request):
