@@ -16,7 +16,7 @@
             <el-row type="flex" justify="center">
                 <!-- <div class="bg-layout"> -->
                 <el-avatar shape="square" :size="150" :src="profilePic" @error="errorHandler">
-                    <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+                    <img src="{{ request.user.socialaccount_set.all.0.get_avatar_url }}" />
                 </el-avatar>
                 <!-- </div> -->
             </el-row>
@@ -50,6 +50,7 @@
         </div>
     </el-col>
 </el-row>
+{% if request.user.username == username %}
 <el-row :gutter="20">
     <div style="margin-bottom: 20px;">
         <el-button-group style="width: 100%;">
@@ -114,6 +115,7 @@
         </el-button-group>
     </div>
 </el-row>
+{% endif %}
 <el-row :gutter="20">
     <el-col>
         <div>
