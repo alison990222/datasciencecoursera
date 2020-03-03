@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^user/', include('user.urls')),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^', views.getHomePage, name="getHomePage")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

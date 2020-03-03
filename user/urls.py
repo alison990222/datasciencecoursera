@@ -7,7 +7,6 @@ urlpatterns = [
     # url(r'^(P<id>[A-Za-z]*[0-9]*)/$', getUserInfo, name="getUserInfo"),
     path('company/<str:companyID>', getCompanyInfo, name="getCompanyInfo"),
     path('<str:userID>', getUserInfo, name="getUserInfo"),
-    
     # path('<str:id>/', getUserInfo, name="getUserInfo"),
     
     # url(r'^editProfile$', editProfile, name="editProfile"),
