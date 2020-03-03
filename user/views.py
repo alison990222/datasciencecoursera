@@ -18,7 +18,7 @@ def getCompanyInfo(request, companyID):
             if postForm == "apply":
                 position = request.POST["position"]
                 appliObj = application(
-                    feedback = request.POST["detail"],
+                    detail = request.POST["detail"],
                 )
                 appliObj.save()
 
@@ -271,4 +271,4 @@ def getUserInfo(request, userID):
 @require_http_methods(["GET"])
 def getHomePage(request):
     context = {}
-    return render(request, 'home.html', context)
+    return render(request, 'home1.html', context)
