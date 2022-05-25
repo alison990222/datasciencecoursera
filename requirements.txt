@@ -97,7 +97,7 @@ pycodestyle==2.5.0
 pycparser==2.19
 Pygments==2.4.2
 PyHamcrest==2.0.0
-PyJWT==1.5.3
+PyJWT==2.4.0
 PyMySQL==0.9.3
 pyOpenSSL==19.1.0
 pyparsing==2.4.2
